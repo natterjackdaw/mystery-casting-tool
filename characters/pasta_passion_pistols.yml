@@ -1,0 +1,20 @@
+suspects:
+  - name: Mama Rosa
+    summary: "Pepi's grieving widow"
+    optional: 
+  - name: Angel Roni
+    summary: "Pepi and Rosa's beautiful daughter"
+  - name: Marco Roni
+    summary: "Pepi and Mama Rosa's only son - expected to take over the restaurant after his parents retired"
+  - name: Rocco Scarfazzi
+    summary: "Pepi's twin brother, a tough-talking no-nonsense Italian business man"
+  - name: Tara Misu
+    summary: "Tara is Rocco's vivacious young fiancee"
+  - name: Bo Jalais
+    summary: "Cousin of a cousin of Rocco's, Bo manages the Scarfazzi vineyards"
+
+guests:
+  - name: Father Al Fredo
+    summary: "An Italian priest and longtime family friend of the Roni's and the Scarfazzi's"
+  - name: Clair Voyant
+    summary: "Mama Rosa's best friend and astrology advisor"
