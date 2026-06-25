@@ -1,7 +1,11 @@
 [project]
 name = "mystery-casting-tool"
 version = "0.1.0"
-description = "Add your description here"
+description = "Streamlit app that assigns murdery mystery suspect characters to groups of people."
+keywords = ["streamlit", "app", "murder mystery", "drama"]
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "streamlit>=1.58.0",
+]

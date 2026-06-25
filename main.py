@@ -1,5 +1,7 @@
+import streamlit as st
+
 def main():
-    print("Hello from mystery-casting-tool!")
+    st.header("Hello from mystery-casting-tool!")
 
 
 if __name__ == "__main__":
