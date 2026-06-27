@@ -8,6 +8,17 @@ def main():
             Sound like a terrible idea?
             Yeah, you're probably right.
             """)
+    
+    st.write("Some pages are more complete than others...")
+
+
+    with st.expander("About Pasta, Passion, and Pistols (1995)"):
+        st.write("Pasta, Passion & Pistols combines theatrical roleplay, structured clue reveals, and strategic interrogation into an immersive murder mystery evening. With clear pacing, honest questioning, and dramatic flair, your group will uncover secrets, expose motives, and reveal the killer in a night filled with suspense, humor, and Italian flair.")
+        st.write("6-8 players")
+        if st.button("Assign people for deadly pasta mystery mayhem!"):
+            st.switch_page("pages/pasta_passion_and_pistols.py")
+
+    
 
 
 if __name__ == "__main__":
