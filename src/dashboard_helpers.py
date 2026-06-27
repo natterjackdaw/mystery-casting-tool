@@ -41,15 +41,15 @@ def multiple_text_submission_box(
             st.write(f"Are you happy with your final list of {len(values)}?")
             st.write(', '.join(values))
 
+        return inputs
 
-    # st.write(inputs)
-    # st.session_state.cleaned_inputs = [n for n in inputs if len(n) > 0]
-    # st.write(st.session_state.cleaned_inputs)
 
-    # if len(st.session_state.cleaned_inputs) > min_entries:
-    #     disable_submit = False
-    # else:
-    #     disable_submit = True
+def switch_tab(tabs_key: str, tab_name: str):
+    """
+    Change tabs
+    """
+    st.session_state[tabs_key] = tab_name
 
-    # if st.button("Assign everyone!"):
-    #     return st.session_state.cleaned_inputs
+
+def sopranos_quote():
+    st.toast("You know the deal. No one can be trusted.")
