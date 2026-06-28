@@ -108,10 +108,5 @@ with results:
                 with cols[1]:
                     with st.expander(f"{pasta_people[i]['name']}"):
                         st.markdown(f"{pasta_people[i]['summary']}")
-            # pasta_people_table = get_characters.for_table(pasta_people)
-
-            # st.table(pasta_people, border=False)
-
-            # with st.container(width='content', horizontal=True):
 
 
