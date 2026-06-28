@@ -1,7 +1,5 @@
-import os
 import random
-from typing import List, Dict
-import yaml
+from typing import List
 
 
 def key_shuffle(length_of_list: int) -> List[int]:
