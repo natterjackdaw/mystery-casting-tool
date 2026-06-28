@@ -45,7 +45,7 @@ def multiple_text_submission_box(
             inputs[i] = st.text_input(
                 label=f"Name {i+1}",
                 value=default_val,
-                max_chars=40,
+                max_chars=20,
                 key=f"name_{i+1}",
                 help="Please enter name/nickname of person you need to assign a character to."
             )

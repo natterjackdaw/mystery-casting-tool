@@ -35,9 +35,6 @@ with submission_form:
     if submitted_attendees is not None:
         st.session_state['attendees'] = submitted_attendees
 
-    # if st.session_state['attendees']:
-    #     st.write(f"Are you happy with your final list of {len(st.session_state['attendees'])}?")
-    #     st.write(', '.join(st.session_state['attendees']))
 
     if st.session_state['attendees'] is None:
         # no one submitted
@@ -53,6 +50,7 @@ with submission_form:
     if 'attendees' in st.session_state:
         if st.button("Forget submitted names"):
             del st.session_state['attendees']
+            st.toast("They're swimming with the fishes.")
 
 # who is who?
 with results:
@@ -86,18 +84,34 @@ with results:
         )
                 
 
-
     if magic_button:
 
-        # assign_helper = utils.key_shuffle(len(st.session_state['attendees']))
-        # st.write(assign_helper)
+        with st.spinner(text="Making you an offer you can't refuse..."):
 
-        number_of_attendees = len(st.session_state['attendees'])
+            number_of_attendees = len(st.session_state['attendees'])
+            length_of_names = [len(name) for name in st.session_state['attendees']]
+            longest_name = max(length_of_names)
 
-        pasta_people = get_characters.pasta_passion_pistols(number_of_attendees)
-        st.write(pasta_people)
-        # st.write(type(pasta_people))
-        
-        # for key in pasta_people.keys():
-        #     st.write(key)
-        #     st.write(pasta_people[key])
+            pasta_people = get_characters.pasta_passion_pistols(number_of_attendees)
+
+            assignees = []
+            random_assigning_helper = utils.key_shuffle(number_of_attendees)
+            for i in random_assigning_helper:
+                assignees.append(st.session_state['attendees'][i])
+
+            for i in range(len(assignees)):
+                pasta_people[i]["player"] = assignees[i]
+                
+                cols = st.columns([0.15, 0.85], vertical_alignment="center")
+                with cols[0]:
+                    st.markdown(f"{assignees[i]}", text_alignment='right')
+                with cols[1]:
+                    with st.expander(f"{pasta_people[i]['name']}"):
+                        st.markdown(f"{pasta_people[i]['summary']}")
+            # pasta_people_table = get_characters.for_table(pasta_people)
+
+            # st.table(pasta_people, border=False)
+
+            # with st.container(width='content', horizontal=True):
+
+
