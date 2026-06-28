@@ -1,6 +1,7 @@
 import streamlit as st
 
 import src.dashboard_helpers as dh
+import src.get_characters as get_characters
 import src.utils as utils
 
 
@@ -60,42 +61,43 @@ with results:
         cannot_assign = True
         st.write('No attendees in session')
         st.write('Go back to previous tab and submit attendees.')
-        dh.cannot_assign_button(tab_key)
+        # dh.cannot_assign_button(tab_key)
     elif st.session_state['attendees'] is None:
         st.write(f'Session attendees is {st.session_state['attendees']}')
         cannot_assign = True
-        dh.cannot_assign_button(tab_key)
+        # dh.cannot_assign_button(tab_key)
     elif len(st.session_state['attendees']) < 6:
         cannot_assign = True
         st.write(f'You have only submitted {len(st.session_state['attendees'])}, go back to previous tab and submit attendees.')
         st.write(f"So far: {', '.join(st.session_state['attendees'])}")
-        dh.cannot_assign_button(tab_key)
+        # dh.cannot_assign_button(tab_key)
     else:
         cannot_assign = False
         st.write(f"Are you happy with your final list of {len(st.session_state['attendees'])}")
         st.write(', '.join(st.session_state['attendees']))
         
-        with st.container(width='content', horizontal=True):
-            dh.cannot_assign_button(tab_key)
-            magic_button = st.button(
-                "Assign!", 
-                # on_click=None,
-                disabled=cannot_assign,
-                type="primary"
-            )
+    with st.container(width='content', horizontal=True):
+        dh.cannot_assign_button(tab_key)
+        magic_button = st.button(
+            "Assign!", 
+            # on_click=None,
+            disabled=cannot_assign,
+            type="primary"
+        )
                 
 
-        if magic_button:
 
-            # assign_helper = utils.key_shuffle(len(st.session_state['attendees']))
-            # st.write(assign_helper)
+    if magic_button:
 
-            number_of_attendees = len(st.session_state['attendees'])
+        # assign_helper = utils.key_shuffle(len(st.session_state['attendees']))
+        # st.write(assign_helper)
 
-            pasta_people = utils.return_pasta_characters_from_yml(number_of_attendees)
-            st.write(pasta_people)
-            # st.write(type(pasta_people))
-            
-            # for key in pasta_people.keys():
-            #     st.write(key)
-            #     st.write(pasta_people[key])
+        number_of_attendees = len(st.session_state['attendees'])
+
+        pasta_people = get_characters.pasta_passion_pistols(number_of_attendees)
+        st.write(pasta_people)
+        # st.write(type(pasta_people))
+        
+        # for key in pasta_people.keys():
+        #     st.write(key)
+        #     st.write(pasta_people[key])

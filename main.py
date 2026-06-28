@@ -8,8 +8,6 @@ def main():
             Sound like a terrible idea?
             Yeah, you're probably right.
             """)
-    
-    st.write("Some pages are more complete than others...")
 
 
     with st.expander("About Pasta, Passion, and Pistols (1995)"):
