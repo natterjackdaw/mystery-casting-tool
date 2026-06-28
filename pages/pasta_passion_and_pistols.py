@@ -20,7 +20,7 @@ with submission_form:
 
     st.write("Enter your 6 - 8 names below.")
 
-    attendees = dh.multiple_text_submission_box(8, 6)
+    st.session_state['attendees'] = dh.multiple_text_submission_box(8, 6)
 
     if len(st.session_state['attendees']) >= 6:
         not_ready = False
@@ -37,12 +37,36 @@ with submission_form:
 # who is who?
 with results:
 
-    if 'attendees' not in st.session_state:
-        st.session_state['attendees'] = attendees
+    # if 'attendees' not in st.session_state:
+    #      = attendees
 
     st.write(st.session_state['attendees'])
 
     assign_helper = utils.key_shuffle(len(st.session_state['attendees']))
     st.write(assign_helper)
 
-    st.write(utils.return_characters_from_yml('pasta_passion_pistols.yml'))
+    if len(st.session_state['attendees']) < 6:
+        cannot_assign = True
+        st.write('Go back to previous tab and submit your attendees.')
+        st.button(
+            "Go back",
+            on_click=dh.switch_tab, 
+            args=("pasta_tabs", "Attendee list")
+        )
+    else:
+        cannot_assign = False
+
+    magic_button = st.button(
+        "Assign!", 
+        on_click=None,
+        disabled=cannot_assign)
+
+    if magic_button:
+
+        pasta_people = utils.return_pasta_characters_from_yml(st.session_state['attendees'])
+        st.write(pasta_people)
+        # st.write(type(pasta_people))
+        
+        # for key in pasta_people.keys():
+        #     st.write(key)
+        #     st.write(pasta_people[key])
