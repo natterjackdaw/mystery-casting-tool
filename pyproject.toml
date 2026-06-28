@@ -1,0 +1,18 @@
+[project]
+name = "mystery-casting-tool"
+version = "0.1.0"
+description = "Streamlit app that assigns murdery mystery suspect characters to groups of people."
+keywords = ["streamlit", "app", "murder mystery", "drama", "uv", "roleplay"]
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = [
+    "faker>=40.23.0",
+    "pyyaml>=6.0.3",
+    "streamlit>=1.58.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.20",
+]
