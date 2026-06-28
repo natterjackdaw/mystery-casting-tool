@@ -8,11 +8,14 @@ st.header("Pasta, Passion, and Pistols")
 
 st.write("The succulent aroma of home cooked pasta is drifting from New York City's most popular Italian eatery, La Speranza, but something else is heating up the kitchen...cold blooded murder! Restauranteur, Pepi Roni, has been shot in the back with his own pistol. Tonight his family and friends will gather to pay their respects to poor Pepi, but one of the guests won't be shedding any tears.")
 
+tab_names = ["Attendee list", "Character results"]
 submission_form, results = st.tabs(
-    ["Attendee list", "Character results"],
+    tab_names,
     key="pasta_tabs",
     on_change=dh.sopranos_quote
 )
+
+
 
 # first tab
 with submission_form:
@@ -20,53 +23,76 @@ with submission_form:
 
     st.write("Enter your 6 - 8 names below.")
 
-    st.session_state['attendees'] = dh.multiple_text_submission_box(8, 6)
+    if 'attendees' not in st.session_state:
+        st.session_state['attendees'] = None
 
-    if len(st.session_state['attendees']) >= 6:
+    submitted_attendees = dh.multiple_text_submission_box(
+        8, 6, tab_names, tab_names[1]
+    )
+
+    if submitted_attendees is not None:
+        st.session_state['attendees'] = submitted_attendees
+
+    # if st.session_state['attendees']:
+    #     st.write(f"Are you happy with your final list of {len(st.session_state['attendees'])}?")
+    #     st.write(', '.join(st.session_state['attendees']))
+
+    if st.session_state['attendees'] is None:
+        # no one submitted
+        not_ready = True
+    elif len(st.session_state['attendees']) >= 6:
+        # print(st.write(st.session_state['attendees']))
+        # we can assign
         not_ready = False
     else:
+        # not enough people
         not_ready = True
 
-    st.button(
-        "I'm happy - let's get this party started!",
-        on_click=dh.switch_tab, 
-        args=("pasta_tabs", "Character results"),
-        disabled=not_ready
-    )
+    if 'attendees' in st.session_state:
+        if st.button("Forget submitted names"):
+            del st.session_state['attendees']
 
 # who is who?
 with results:
 
-    # if 'attendees' not in st.session_state:
-    #      = attendees
-
-    st.write(st.session_state['attendees'])
-
-    assign_helper = utils.key_shuffle(len(st.session_state['attendees']))
-    st.write(assign_helper)
-
-    if len(st.session_state['attendees']) < 6:
+    if 'attendees' not in st.session_state:
         cannot_assign = True
-        st.write('Go back to previous tab and submit your attendees.')
-        st.button(
-            "Go back",
-            on_click=dh.switch_tab, 
-            args=("pasta_tabs", "Attendee list")
-        )
+        st.write('No attendees in session')
+        st.write('Go back to previous tab and submit attendees.')
+        dh.cannot_assign_button("pasta_tabs")
+    elif st.session_state['attendees'] is None:
+        st.write(f'Session attendees is {st.session_state['attendees']}')
+        cannot_assign = True
+        dh.cannot_assign_button("pasta_tabs")
+    elif len(st.session_state['attendees']) < 6:
+        cannot_assign = True
+        st.write(f'You have only submitted {len(st.session_state['attendees'])}, go back to previous tab and submit attendees.')
+        st.write(f"So far: {', '.join(st.session_state['attendees'])}")
+        dh.cannot_assign_button("pasta_tabs")
     else:
         cannot_assign = False
-
-    magic_button = st.button(
-        "Assign!", 
-        on_click=None,
-        disabled=cannot_assign)
-
-    if magic_button:
-
-        pasta_people = utils.return_pasta_characters_from_yml(st.session_state['attendees'])
-        st.write(pasta_people)
-        # st.write(type(pasta_people))
+        st.write(f"Are you happy with your final list of {len(st.session_state['attendees'])}")
+        st.write(', '.join(st.session_state['attendees']))
         
-        # for key in pasta_people.keys():
-        #     st.write(key)
-        #     st.write(pasta_people[key])
+        with st.container(width='content', horizontal=True):
+            dh.cannot_assign_button("pasta_tabs")
+            magic_button = st.button(
+                "Assign!", 
+                # on_click=None,
+                disabled=cannot_assign,
+                type="primary"
+            )
+                
+
+        if magic_button:
+
+            assign_helper = utils.key_shuffle(len(st.session_state['attendees']))
+            st.write(assign_helper)
+
+            pasta_people = utils.return_pasta_characters_from_yml(st.session_state['attendees'])
+            st.write(pasta_people)
+            # st.write(type(pasta_people))
+            
+            # for key in pasta_people.keys():
+            #     st.write(key)
+            #     st.write(pasta_people[key])

@@ -11,7 +11,9 @@ fake = Faker(['it_IT', 'en_US', 'en_IE', 'en_IN', 'en_GB', 'es_MX'])
 def multiple_text_submission_box(
         max_entries: int,
         min_entries: int,
-        session_state_name: str = "attendees"
+        tab_keys: List[str],
+        tab_name: List[str]
+        #session_state_name: str = "attendees"
 ) -> List[str]:
     """
     Enter text in multiple boxes.
@@ -24,16 +26,21 @@ def multiple_text_submission_box(
         inputs = {}
         for i in range(max_entries):
             
-            if session_state_name not in st.session_state:
-                if i >= min_entries:
-                    default_val = ''
-                else:
-                    default_val = fake.unique.first_name()
+            # if session_state_name not in st.session_state:
+            #     if i >= min_entries:
+            #         default_val = ''
+            #     else:
+            #         default_val = fake.unique.first_name()
+            # else:
+            #     try:
+            #         default_val = st.session_state[session_state_name][i]
+            #     except:
+            #         default_val = ''
+
+            if i >= min_entries:
+                default_val = ''
             else:
-                try:
-                    default_val = st.session_state[session_state_name][i]
-                except:
-                    default_val = ''
+                default_val = fake.unique.first_name()
 
             inputs[i] = st.text_input(
                 label=f"Name {i+1}",
@@ -43,18 +50,18 @@ def multiple_text_submission_box(
                 help="Please enter name/nickname of person you need to assign a character to."
             )
 
-        submitted = st.form_submit_button("Submit")
+        submitted = st.form_submit_button(
+            "Submit",
+            on_click=switch_tab, 
+            args=("pasta_tabs", "Character results"),
+            type="primary"
+        )
         if submitted:
             values = [v for v in inputs.values() if v != ""]
-            st.write(f"Are you happy with your final list of {len(values)}?")
-            st.write(', '.join(values))
-
-            st.session_state[session_state_name] = values
             return values
         
         else:
-            if session_state_name not in st.session_state:
-                st.session_state[session_state_name] = []
+            return None
 
          
 
@@ -67,3 +74,15 @@ def switch_tab(tabs_key: str, tab_name: str):
 
 def sopranos_quote():
     st.toast("You know the deal. No one can be trusted.")
+
+
+def cannot_assign_button(
+        tab_keys: str,
+        tab_name: str = "Attendee list"
+):
+
+    st.button(
+        "Go back",
+        on_click=switch_tab, 
+        args=(tab_keys, tab_name)
+    )
