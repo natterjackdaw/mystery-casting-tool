@@ -1,6 +1,7 @@
 import streamlit as st
 
 from faker import Faker
+from typing import List
 
 
 # for fake names
@@ -9,23 +10,30 @@ fake = Faker(['it_IT', 'en_US', 'en_IE', 'en_IN', 'en_GB', 'es_MX'])
 
 def multiple_text_submission_box(
         max_entries: int,
-        min_entries: int
-):
+        min_entries: int,
+        session_state_name: str = "attendees"
+) -> List[str]:
     """
     Enter text in multiple boxes.
     You can only submit if you have entered the minimum.
     max_entries: number of free text boxes
     min_entries: how many need to be filled before you press submit.
     """
-
     with st.form("pasta_party_people"):
 
         inputs = {}
         for i in range(max_entries):
-            if i >= min_entries:
-                default_val = ''
+            
+            if session_state_name not in st.session_state:
+                if i >= min_entries:
+                    default_val = ''
+                else:
+                    default_val = fake.unique.first_name()
             else:
-                default_val = fake.unique.first_name()
+                try:
+                    default_val = st.session_state[session_state_name][i]
+                except:
+                    default_val = ''
 
             inputs[i] = st.text_input(
                 label=f"Name {i+1}",
@@ -41,8 +49,14 @@ def multiple_text_submission_box(
             st.write(f"Are you happy with your final list of {len(values)}?")
             st.write(', '.join(values))
 
-        return inputs
+            st.session_state[session_state_name] = values
+            return values
+        
+        else:
+            if session_state_name not in st.session_state:
+                st.session_state[session_state_name] = []
 
+         
 
 def switch_tab(tabs_key: str, tab_name: str):
     """

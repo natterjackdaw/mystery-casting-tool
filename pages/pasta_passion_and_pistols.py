@@ -1,9 +1,8 @@
 import streamlit as st
 
 import src.dashboard_helpers as dh
+import src.utils as utils
 
-
-st.session_state['attendees'] = {}
 
 st.header("Pasta, Passion, and Pistols")
 
@@ -21,10 +20,29 @@ with submission_form:
 
     st.write("Enter your 6 - 8 names below.")
 
-    st.session_state['attendees'] = dh.multiple_text_submission_box(8, 6)
+    attendees = dh.multiple_text_submission_box(8, 6)
+
+    if len(st.session_state['attendees']) >= 6:
+        not_ready = False
+    else:
+        not_ready = True
 
     st.button(
         "I'm happy - let's get this party started!",
         on_click=dh.switch_tab, 
-        args=("pasta_tabs", "Character results")
+        args=("pasta_tabs", "Character results"),
+        disabled=not_ready
     )
+
+# who is who?
+with results:
+
+    if 'attendees' not in st.session_state:
+        st.session_state['attendees'] = attendees
+
+    st.write(st.session_state['attendees'])
+
+    assign_helper = utils.key_shuffle(len(st.session_state['attendees']))
+    st.write(assign_helper)
+
+    st.write(utils.return_characters_from_yml('pasta_passion_pistols.yml'))
