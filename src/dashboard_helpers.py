@@ -11,9 +11,9 @@ fake = Faker(['it_IT', 'en_US', 'en_IE', 'en_IN', 'en_GB', 'es_MX'])
 def multiple_text_submission_box(
         max_entries: int,
         min_entries: int,
-        tab_keys: List[str],
-        tab_name: List[str]
-        #session_state_name: str = "attendees"
+        tab_key: List[str],
+        tab_name: List[str],
+        session_state_name: str
 ) -> List[str]:
     """
     Enter text in multiple boxes.
@@ -53,17 +53,20 @@ def multiple_text_submission_box(
         submitted = st.form_submit_button(
             "Submit",
             on_click=switch_tab, 
-            args=("pasta_tabs", "Character results"),
+            args=(tab_key, "Character results"),
             type="primary"
         )
         if submitted:
+
+            if session_state_name in st.session_state:
+                del st.session_state[session_state_name]
+
             values = [v for v in inputs.values() if v != ""]
             return values
         
         else:
             return None
 
-         
 
 def switch_tab(tabs_key: str, tab_name: str):
     """
